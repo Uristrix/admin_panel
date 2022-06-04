@@ -3,7 +3,8 @@ import M from 'materialize-css';
 import {Header} from "../components/header";
 import {Admin} from "../components/admin";
 import {Footer} from "../components/footer";
-import {Exit} from "../components/exit"
+
+import store from "../store/appStore";
 const Admin_page = () =>
 {
 
@@ -16,14 +17,11 @@ const Admin_page = () =>
 
     return(
         <div>
-            <Header/>
+            <Header func ={() => store.loginStatus = 'notAuth'}/>
 
             <main>
                 <Admin/>
             </main>
-            <section>
-                <Exit/>
-            </section>
             <Footer/>
 
         </div>

@@ -3,7 +3,7 @@
 .bar
 {
   display: flex;
-
+  z-index: 3;
   justify-content: center;
   background: $color1;
   border-bottom-left-radius: 50%;

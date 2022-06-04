@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":["admin_panel.scss","constants.scss"],"names":[],"mappings":"AAEA;EACE;EACA;EACA;EACA;EACA;EACA,YCRO;EDSP,SCJO;EDKP,eCLO;EDMP;;AAEA;EACE","file":"admin_panel.css"}
+{"version":3,"sourceRoot":"","sources":["admin_panel.scss","constants.scss"],"names":[],"mappings":"AAEA;EACE;EACA;EACA;EACA;EACA;EACA,YCRO;EDSP,SCJO;EDKP,eCLO;EDMP;;AAEA;EACE;;AAEF;EAdF;IAeI","file":"admin_panel.css"}

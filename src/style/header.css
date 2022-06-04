@@ -1,5 +1,6 @@
 .bar {
   display: flex;
+  z-index: 3;
   justify-content: center;
   background: rgba(255, 255, 255, 0.68);
   border-bottom-left-radius: 50%;

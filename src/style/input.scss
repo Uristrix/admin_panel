@@ -20,7 +20,7 @@
   {
     -webkit-text-fill-color: $text_color;
     -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
-
+    caret-color: black;
     color: white;
     box-sizing: border-box;
     font-size: 20px;
@@ -34,11 +34,11 @@
 
     &::placeholder
     {
-      color: #adadad;
+      color: $text_color;
     }
     &:focus {
       outline:0;
-      border-color:$color2;
+      border:3px solid $color2 !important;
       -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
       background: white;
     }
