@@ -1,0 +1,16 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body, html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background: linear-gradient(to top, #b721ff 0%, #21d4fd 100%) no-repeat fixed;
+  color: black;
+}
+
+/*# sourceMappingURL=index.css.map */

@@ -1,0 +1,23 @@
+@import "constants";
+//header
+.bar
+{
+  display: flex;
+
+  justify-content: center;
+  background: $color1;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  box-shadow:  0 5px 33px -5px rgb(0, 0, 0) !important;
+  li a {
+    color: $text_color;
+    font-weight: bold
+  }
+}
+//.image
+//{
+//  position: relative;
+//  margin: 7% auto;
+//  height: 25%;
+//  width: 25%;
+//}

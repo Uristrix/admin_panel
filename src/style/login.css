@@ -1,0 +1,156 @@
+.form_elem {
+  position: relative;
+  width: 100%;
+  margin: 30px auto 0;
+  font-size: 20px;
+}
+.form_elem .icon {
+  position: absolute;
+  z-index: 3;
+  -webkit-transform: translate(-70px, 10px);
+  transform: translate(-70px, 10px);
+  cursor: pointer;
+}
+.form_elem input, .form_elem input:-webkit-autofill {
+  -webkit-text-fill-color: #494949;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+  color: white;
+  box-sizing: border-box;
+  font-size: 20px;
+  background: white;
+  width: 100%;
+  height: 40px;
+  padding: 5px 10px;
+  border: 3px solid #21d4fd;
+  border-radius: 30px;
+  transition: all 0.5s ease 0s;
+}
+.form_elem input::placeholder, .form_elem input:-webkit-autofill::placeholder {
+  color: #adadad;
+}
+.form_elem input:focus, .form_elem input:-webkit-autofill:focus {
+  outline: 0;
+  border-color: #b721ff;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+  background: white;
+}
+
+.button {
+  background-image: linear-gradient(to right, #b721ff, cyan);
+  box-shadow: 0 4px 15px 0 #ac88fd;
+  width: 160px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  margin: 30px auto 0 auto;
+  height: 55px;
+  text-align: center;
+  border: none;
+  background-size: 150% 100%;
+  border-radius: 50px;
+  moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.button:hover {
+  background-position: 100% 0;
+  moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.button:focus {
+  outline: none;
+}
+
+.login {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  background: rgba(255, 255, 255, 0.68);
+  color: #494949;
+  padding: 30px;
+  border-radius: 30px 30px 30% 30%;
+  text-align: center;
+  -webkit-box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
+  -moz-box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
+  box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
+  transition: all 1s;
+}
+@media (max-width: 768px) {
+  .login {
+    width: 80%;
+  }
+}
+.login h3 {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+}
+.login .form_elem {
+  position: relative;
+  width: 100%;
+  margin: 30px auto 0;
+  font-size: 20px;
+}
+.login .form_elem .icon {
+  position: absolute;
+  z-index: 3;
+  -webkit-transform: translate(-70px, 10px);
+  transform: translate(-70px, 10px);
+  cursor: pointer;
+}
+.login .form_elem input, .login .form_elem input:-webkit-autofill {
+  -webkit-text-fill-color: #494949;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+  color: white;
+  box-sizing: border-box;
+  font-size: 20px;
+  background: none;
+  width: 100%;
+  height: 40px;
+  padding: 5px 10px;
+  border: 3px solid #21d4fd;
+  border-radius: 30px;
+  transition: all 0.5s ease 0s;
+}
+.login .form_elem input::placeholder, .login .form_elem input:-webkit-autofill::placeholder {
+  color: #adadad;
+}
+.login .form_elem input:focus, .login .form_elem input:-webkit-autofill:focus {
+  outline: 0;
+  border-color: #b721ff;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+  background: white;
+}
+
+.error {
+  animation: shiver 0.3s linear;
+}
+.error .form_elem input, .error .form_elem input:-webkit-autofill {
+  border: 3px solid red;
+}
+.error .form_elem input:focus, .error .form_elem input:-webkit-autofill:focus {
+  border-color: red;
+}
+
+@keyframes shiver {
+  0% {
+    transform: translate(-50%, -50%);
+  }
+  25% {
+    transform: translate(calc(-50% + 10px), -50%);
+  }
+  75% {
+    transform: translate(calc(-50% - 20px), -50%);
+  }
+  100% {
+    transform: translate(calc(-50% + 10px), -50%);
+  }
+}
+
+/*# sourceMappingURL=login.css.map */

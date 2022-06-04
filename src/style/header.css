@@ -1,0 +1,14 @@
+.bar {
+  display: flex;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.68);
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  box-shadow: 0 5px 33px -5px rgb(0, 0, 0) !important;
+}
+.bar li a {
+  color: #494949;
+  font-weight: bold;
+}
+
+/*# sourceMappingURL=header.css.map */

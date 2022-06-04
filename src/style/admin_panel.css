@@ -1,0 +1,16 @@
+.admin {
+  display: flex;
+  flex-direction: column;
+  margin: 2em auto auto;
+  width: 90vw;
+  height: 70vh;
+  background: rgba(255, 255, 255, 0.68);
+  padding: 30px;
+  border-radius: 30px;
+  text-align: center;
+}
+.admin h3 {
+  margin: 0 30px 30px;
+}
+
+/*# sourceMappingURL=admin_panel.css.map */

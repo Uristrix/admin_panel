@@ -1,0 +1,38 @@
+.form_elem {
+  position: relative;
+  width: 100%;
+  margin: 30px auto 0;
+  font-size: 20px;
+}
+.form_elem .icon {
+  position: absolute;
+  z-index: 3;
+  -webkit-transform: translate(-70px, 10px);
+  transform: translate(-70px, 10px);
+  cursor: pointer;
+}
+.form_elem input, .form_elem input:-webkit-autofill {
+  -webkit-text-fill-color: #494949;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+  color: white;
+  box-sizing: border-box;
+  font-size: 20px;
+  background: none;
+  width: 100%;
+  height: 40px;
+  padding: 5px 10px;
+  border: 3px solid #21d4fd;
+  border-radius: 30px;
+  transition: all 0.5s ease 0s;
+}
+.form_elem input::placeholder, .form_elem input:-webkit-autofill::placeholder {
+  color: #adadad;
+}
+.form_elem input:focus, .form_elem input:-webkit-autofill:focus {
+  outline: 0;
+  border-color: #b721ff;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+  background: white;
+}
+
+/*# sourceMappingURL=input.css.map */

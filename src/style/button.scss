@@ -1,0 +1,31 @@
+@import 'constants';
+.button {
+  background-image: linear-gradient(to right, $color2, cyan);
+  box-shadow: 0 4px 15px 0 #ac88fd;
+  width: 160px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  margin: $indent auto 0 auto;
+  height: 55px;
+  text-align:center;
+  border: none;
+  background-size: 150% 100%;
+  border-radius: 50px;
+
+  moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+
+  &:hover
+  {
+    background-position: 100% 0;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+  }
+  &:focus {outline: none;}
+}

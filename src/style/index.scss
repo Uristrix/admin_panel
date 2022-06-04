@@ -1,0 +1,15 @@
+@import "constants";
+* { margin: 0; padding: 0;}
+
+body, html{
+  height: 100%;
+  width: 100%;
+}
+body
+{
+  background: linear-gradient(to top, $color2 0%, $color3 100%) no-repeat fixed;
+  color: black;
+}
+
+
+
