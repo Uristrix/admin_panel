@@ -72,7 +72,7 @@ export const Admin = () =>
         <form className='admin' onSubmit={handleSubmit(onSubmit)}>
            <h3>Admin panel</h3>
 
-            <div>
+            <div className='flex center'>
                 <p>Тип запроса</p>
                 <Dropdown elems = {operation} func = {setDD1} selected = {dd1}/>
             </div>
@@ -103,7 +103,7 @@ export const Admin = () =>
             }
 
             {dd1 === 'Add' &&
-                <div>
+                <div className='flex center'>
                     <div className='form_elem'>
                         <input {...register('code')} placeholder="code"/>
                     </div>
@@ -114,9 +114,14 @@ export const Admin = () =>
                 </div>
             }
 
-            { dd1 === 'Delete' && <Dropdown elems = {data} func = {setDD2} selected = {dd2}/> }
+            { dd1 === 'Delete' &&
+                <div className='flex center'>
+                    <p>Выбор аудитории</p>
+                    <Dropdown elems = {data} func = {setDD2} selected = {dd2}/>
+                </div>
+                 }
 
-            <button className='button' type='submit'>make request</button>
+            <button className='button send' type='submit'>make request</button>
         </form>
     )
 }

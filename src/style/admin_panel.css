@@ -1,5 +1,6 @@
 .admin {
   display: flex;
+  position: relative;
   flex-direction: column;
   margin: 2em auto auto;
   width: 50vw;
@@ -16,6 +17,14 @@
   .admin {
     width: 90vw;
   }
+}
+
+.send {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  margin: 60px auto;
 }
 
 /*# sourceMappingURL=admin_panel.css.map */
