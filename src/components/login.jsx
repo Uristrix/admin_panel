@@ -47,11 +47,12 @@ export const Login = observer(() =>
             <div className='form_elem'>
                 <input {...register('password')}
                        placeholder="Password"
-                       // autoComplete="on"
+                        autoComplete="on"
                        type={passwordShown}/>
                 <FontAwesomeIcon onClick={togglePasswordVisiblity}
                                  className='icon'
-                                 icon={passwordShown === 'password'? faEye: faEyeSlash}/>
+                                 icon={passwordShown === 'password'? faEye: faEyeSlash}
+                />
             </div>
             <button className='button' type='submit'>Login</button>
         </form>
