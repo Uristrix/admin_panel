@@ -16,9 +16,8 @@ const Admin_page = () =>
     }, [])
 
     return(
-        <div>
+        <div className='page'>
             <Header func ={() => store.loginStatus = 'notAuth'}/>
-
             <main>
                 <Admin/>
             </main>

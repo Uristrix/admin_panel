@@ -10,7 +10,7 @@ export const Header = (props) =>
             let elems = document.querySelectorAll('.sidenav');
             M.Sidenav.init(elems);
     }, [])
-    console.log(props)
+
     return(
         <header>
             <div className="navbar-fixed">

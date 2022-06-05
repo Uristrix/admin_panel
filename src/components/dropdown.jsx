@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useEffect} from "react";
 import '../style/dropdown.css';
 
 export const Dropdown = (props) =>
 {
+    //console.log((props))
     const content = props.elems !== undefined?
         props.elems.map((elem) => {
             return <li key={elem['name']} className="item"
@@ -11,7 +12,16 @@ export const Dropdown = (props) =>
             </li>
         }
     ):  <></>
-
+    
+    // useEffect(() =>
+    // {
+    //     if(Object.keys(props.elems).length !== 0)
+    //     {
+    //         props.func(props.elems[0]['name'])
+    //         //console.log('effect2')
+    //     }
+    //
+    // }, [])
     return(
             <div className="container">
                 <input className="dropdown-trigger"

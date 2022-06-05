@@ -1,12 +1,11 @@
 footer {
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.61));
-  position: fixed;
-  right: 0;
+  position: absolute;
   bottom: 0;
   height: 60px;
   width: 100%;
-  display: flex;
   margin: 0;
+  display: flex;
   justify-content: center;
 }
 footer a {

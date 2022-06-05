@@ -4,11 +4,14 @@
   display: flex;
   position: relative;
   flex-direction: column;
-  margin: 2em auto auto;
+  margin: 2em auto 80px auto;
+  padding: $indent $indent $indent;
   width: 50vw;
-  height: 80vh;
+  min-height: 80vh;
   background: $color1;
-  padding: $indent;
+  -webkit-box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
+  -moz-box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
+  box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
   border-radius: $indent;
   text-align: center;
 
@@ -17,7 +20,14 @@
   }
   @media (max-width: 768px) {
     width: 90vw;
+    margin-bottom: 50px;
   }
+
+  .chrome-picker
+  {
+    margin: $indent/2 auto 0 auto;
+  }
+
 }
 
 .send
@@ -27,4 +37,86 @@
   transform: translateX(-50%);
   bottom: 0;
   margin: $indent*2 auto;
+  @media (max-width: 768px) {
+    margin: $indent auto;
+  }
+}
+
+.flex_del
+{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  @media (max-width: 768px) {
+   flex-direction: column;
+  }
+}
+._2{
+  margin: 1em auto;
+  display: block;
+  input{
+  margin: 0;
+    float: bottom;
+  }
+}
+.checkbox
+{
+  margin: $indent auto;
+
+  [type="checkbox"].filled-in:not(:checked)+span:not(.lever):after {
+    background-color: white;
+    border: 3px solid $color3;
+  }
+
+  [type="checkbox"].filled-in:checked + span:after {
+    border: 3px solid $color2;
+    background-color: white;
+  }
+
+
+  [type="checkbox"]+span:not(.lever) {
+    line-height: 15px;
+    color:$text_color;
+  }
+  span{
+
+  }
+
+  [type="checkbox"].filled-in:checked+span:not(.lever):before {
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+  }
+}
+
+.range
+{
+  display: flex;
+  p{
+    margin: auto auto auto auto;
+    width: 30px;
+  }
+
+  input[type=range]{
+    border: 2px solid white;
+    border-radius: 5px;
+    width: 80%;
+    @media (max-width: 768px) {
+      width: 50%;
+    }
+  }
+
+  input[type=range] + .thumb
+  {
+    background-color: $color2 !important;
+  }
+
+  input[type=range]::-webkit-slider-runnable-track {
+    background: white;
+  }
+
+  input[type=range]::-webkit-slider-thumb{
+    background-color: $color3;
+  }
+
+
 }
