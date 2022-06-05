@@ -17,6 +17,7 @@ export const Admin = () =>
     const[rooms, setRooms] = useState([]);
     const[messages, setMessages] = useState([]);
     const[clr, setColor] = useState('ffffff');
+    const[delType, setDelType] = useState('')
     //dropdowns
     const[dd1, setDD1] = useState(operation[0]['name']) ;   //type
     const[dd2, setDD2] = useState('');             //room
@@ -40,16 +41,13 @@ export const Admin = () =>
 
     useEffect(() =>
     {
-        if(rooms !== [])
+        if(Object.keys(rooms).length !== 0)
         {
-            console.log(rooms)
-            console.log(rooms !== [])
             const id = rooms.find((el) => {return el['name'] === dd2} )['id']
             axios.get(API + `geet/string/${id}/massage`)
                 .then((res) => {
-                    console.log(res)
                     setMessages(res.data)
-                    setDD4(messages[0]['string_text'] || '')
+                    setDD4(messages[0]['string_text'])
                 } )
                 .catch((err) => console.log(err))
         }
@@ -92,24 +90,58 @@ export const Admin = () =>
 
             <div className='flex center'>
                 <p>Тип запроса</p>
-                <Dropdown elems = {operation} func = {setDD1} selected = {dd1}/>
+                <Dropdown elems = {operation} func = {setDD1} selected = {dd1} keys={'name'}/>
             </div>
 
             {dd1 === 'Update' &&
                 <div>
                     <div>
                         <p>Выбор аудитории</p>
-                        <Dropdown elems = {rooms} func = {setDD2} selected = {dd2}/>
+                        <Dropdown elems = {rooms} func = {setDD2} selected = {dd2} keys={'name'}/>
                     </div>
                     <div>
                         <p>Тип запроса</p>
-                        <Dropdown elems = {operation} func = {setDD3} selected = {dd3}/>
+                        <Dropdown elems = {operation} func = {setDD3} selected = {dd3} keys={'name'}/>
                     </div>
 
 
                     {dd3 === 'Update' &&
                         <div>
+                            <div>
+                                <p>Выбор сообщения</p>
+                                <Dropdown elems = {messages} func = {setDD4} selected = {dd4} keys={'string_text'}/>
+                            </div>
+                            <div style={{position: 'relative'}}>
+                                <p>Текст сообщения</p>
+                                <div className='form_elem _2'>
+                                    <input {...register('string_text')} placeholder="text"/>
+                                </div>
 
+                                <label className='checkbox'>
+                                    <input type="checkbox" className="filled-in blue" checked={cb}
+                                           onChange={ () => { setCb(!cb)}}/>
+                                    <span>message display</span>
+                                </label>
+
+                                <div className="range-field range">
+                                    <p>speed:</p>
+                                    <input {...register('string_speed')}
+                                           type="range" id="rg2" min="0" max="100" defaultValue="11"
+                                           onChange={() => {setRange(document.getElementById('rg').value)}}
+                                    />
+                                    <p>{range}</p>
+                                </div>
+
+                                <div>
+                                    <p>Выбор типа цвета</p>
+                                    <Dropdown elems = {colors} func = {setDD5} selected = {dd5} keys={'name'}/>
+                                </div>
+                                {dd5 === 'one color' && <ChromePicker  color = {clr}
+                                                                       onChangeComplete ={ (color) => {setColor(color['hex'])}}
+                                />}
+
+                                <button className='button' type='submit'>Update</button>
+                            </div>
                         </div>
                     }
                     {dd3 === 'Add' &&
@@ -136,7 +168,7 @@ export const Admin = () =>
 
                             <div>
                                 <p>Выбор типа цвета</p>
-                                <Dropdown elems = {colors} func = {setDD5} selected = {dd5}/>
+                                <Dropdown elems = {colors} func = {setDD5} selected = {dd5} keys={'name'}/>
                             </div>
                             {dd5 === 'one color' && <ChromePicker  color = {clr}
                                                onChangeComplete ={ (color) => {setColor(color['hex'])}}
@@ -148,12 +180,14 @@ export const Admin = () =>
                     {dd3 === 'Delete' &&
                         <div>
                             <div>
-                                <p>Выбор аудитории</p>
-                                <Dropdown elems = {messages} func = {setDD4} selected = {dd4}/>
+                                <p>Выбор сообщения</p>
+                                <Dropdown elems = {messages} func = {setDD4} selected = {dd4} keys = {'string_text'}/>
                             </div>
                             <div className='flex_del send'>
-                                <button className='button' type='submit'>Delete for one</button>
-                                <button className='button' type='submit'>Delete for all</button>
+                                <button className='button' onClick={() => setDelType('one')}
+                                        type='submit'>Delete for one</button>
+                                <button className='button' onClick={() => setDelType('all')}
+                                        type='submit'>Delete for all</button>
                             </div>
                         </div>
                     }
@@ -178,7 +212,7 @@ export const Admin = () =>
             { dd1 === 'Delete' &&
                 <div>
                     <p>Выбор аудитории</p>
-                    <Dropdown elems = {rooms} func = {setDD2} selected = {dd2}/>
+                    <Dropdown elems = {rooms} func = {setDD2} selected = {dd2} keys={'name'}/>
                     <button className='button send' type='submit'>Delete</button>
                 </div>
                  }
