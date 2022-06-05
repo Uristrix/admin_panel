@@ -47,7 +47,7 @@ export const Admin = () =>
             axios.get(API + `geet/string/${id}/massage`)
                 .then((res) => {
                     setMessages(res.data)
-                    setDD4(messages[0]['string_text'])
+                    setDD4(res.data[0]['string_text'])
                 } )
                 .catch((err) => console.log(err))
         }
