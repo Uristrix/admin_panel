@@ -5,6 +5,7 @@ import {useForm} from "react-hook-form";
 import { observer } from "mobx-react-lite";
 import '../style/login.css'
 import store from "../store/appStore";
+//import {useCookies} from "react-cookie";
 
 const _login = process.env.REACT_APP_LOGIN
 const _password = process.env.REACT_APP_PASSWORD
@@ -14,7 +15,7 @@ export const Login = observer(() =>
     const { register, handleSubmit } = useForm();
     const [passwordShown, setPasswordShown] = useState('password');
     const [error_login, setError] = useState(false)
-
+    //const [cookies, setCookie] = useCookies(["ticker"]);
     const updateError = (state) => setError(state)
     const togglePasswordVisiblity = () => setPasswordShown(passwordShown === 'password'? 'text': 'password');
 
@@ -22,7 +23,11 @@ export const Login = observer(() =>
     {
 
         if(data['login'] === _login && data['password'] === _password)
+        {
             store.loginStatus = 'auth'
+            //setCookie('ticker', data['login']+'|'+data['password'])
+        }
+
 
         else
             updateError(true)
@@ -41,13 +46,16 @@ export const Login = observer(() =>
             <h3>Login</h3>
 
             <div className='form_elem'>
-                <input {...register('login')} placeholder="Login"/>
+                <input {...register('login')} placeholder="Login"
+                       //defaultValue={}
+                />
             </div>
 
             <div className='form_elem'>
                 <input {...register('password')}
                        placeholder="Password"
-                        autoComplete="on"
+                       autoComplete="on"
+                       //defaultValue={}
                        type={passwordShown}/>
                 <FontAwesomeIcon onClick={togglePasswordVisiblity}
                                  className='icon'

@@ -15,7 +15,7 @@ export const Header = (props) =>
         <header>
             <div className="navbar-fixed">
                 <nav className="nav-wrapper bar">
-                    <a href="#" data-target="mobile-demo" className="sidenav-trigger"><i
+                    <a href="/#" data-target="mobile-demo" className="sidenav-trigger"><i
                         className="material-icons">menu</i></a>
 
                     <ul id = 'bar' className='right hide-on-med-and-down'>
@@ -24,7 +24,7 @@ export const Header = (props) =>
                         <li><a href="http://dokuwiki.mgul.ac.ru/dokuwiki/doku.php">dokuwiki</a></li>
                         <li><a href="https://rasp.msfu.ru/">Расписание</a></li>
                         {props.func !== undefined &&
-                            <li><a href="#" onClick={props.func} >Exit</a></li>}
+                            <li><a href="/#" onClick={props.func} >Exit</a></li>}
                     </ul>
                 </nav>
             </div>
@@ -35,7 +35,7 @@ export const Header = (props) =>
                 <li><a href="http://dokuwiki.mgul.ac.ru/dokuwiki/doku.php">dokuwiki</a></li>
                 <li><a href="https://rasp.msfu.ru/">Расписание</a></li>
                 {props.func !== undefined &&
-                    <li><a href="#" onClick={props.func} >Exit</a></li>}
+                    <li><a href="/#" onClick={props.func} >Exit</a></li>}
             </ul>
         </header>
     )
