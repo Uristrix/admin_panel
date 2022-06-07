@@ -14,7 +14,6 @@
   box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
   border-radius: $indent;
   text-align: center;
-
   h3{
     margin: 0 $indent $indent;
   }
@@ -32,10 +31,11 @@
 
 .send
 {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 0;
+  //position: absolute;
+  //left: 50%;
+  //transform: translateX(-50%);
+  //bottom: 0;
+
   margin: $indent*2 auto;
   @media (max-width: 768px) {
     margin: $indent auto;

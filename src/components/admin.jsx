@@ -34,7 +34,7 @@ export const Admin = () =>
     //checkbox
     //const[cb, setCb] = useState(false);
     //range
-    //const[range, setRange] = useState(11);
+    const[range, setRange] = useState(11);
 
     useEffect(() =>
     {
@@ -65,7 +65,7 @@ export const Admin = () =>
     },[dd2, rooms])
     useEffect(() =>
         {
-            if(Object.keys(messages).length !== 0 && dd3['name'] === 'Обновить')
+            if(Object.keys(messages).length !== 0 && dd3['name'] === 'Добавить')
                 ActualMessage(dd4)
         }
     ,[dd4])
@@ -105,11 +105,9 @@ export const Admin = () =>
                 axios.post(API + 'geet/massage', data)
                     .then((res) =>
                     {
-                        console.log(res.data['id'])
                         axios.post(API + `geet/massage/${res.data['id']}/string`, {id:dd2['id']})
                             .then((res) => {console.log(res); setTrigger(!triggerEffect);})
                             .catch((err) => console.log(err))
-                        console.log(res)
                     })
                     .catch((err) => console.log(err))
 
@@ -148,10 +146,10 @@ export const Admin = () =>
     const ActualMessage = (elem) =>
     {
         setDD4(elem)
-        setValue('string_text', elem['string_text'])
+        setValue('stext', elem['stext'])
         setValue('showed', Boolean(elem['showed']))
         //setCb(Boolean(elem['showed']))
-        //setRange(elem['string_speed'])
+        setRange(elem['string_speed'])
         setValue("string_speed", elem['string_speed'])
         setDD5(colors.find((el) => {return el["id"] === elem['string_color_type']}))
         setColor('#' + elem['string_color'].toString(16))
@@ -182,13 +180,13 @@ export const Admin = () =>
                         <div>
                             <div>
                                 <p>Выбор сообщения</p>
-                                <Dropdown elems = {messages} func = {ActualMessage} selected = {dd4} keys={'string_text'}/>
+                                <Dropdown elems = {messages} func = {ActualMessage} selected = {dd4} keys={'stext'}/>
                             </div>
                             <div style={{position: 'relative'}}>
                                 <p>Текст сообщения</p>
                                 <div className='form_elem _second'>
-                                    <input id='st' {...register('string_text')} placeholder="text"
-                                           defaultValue={dd4['string_text'] || ''}/>
+                                    <input id='st' {...register('stext')} placeholder="text"
+                                           defaultValue={dd4['stext'] || ''}/>
                                 </div>
 
                                 <label className='checkbox'>
@@ -201,10 +199,10 @@ export const Admin = () =>
                                     <p className='left'>Скорость:</p>
                                     <input {...register('string_speed')}
                                            type="range" id="rg2" min="0" max="100"
-                                           defaultValue={dd4['string_text']||11}
-                                           //onChange={() => {setRange(document.getElementById('rg2').value)}}
+                                           defaultValue={dd4['stext']||11}
+                                           onChange={() => {setRange(document.getElementById('rg2').value)}}
                                     />
-                                    <p className='right'>{getValues("string_speed")}</p>
+                                    <p>{range}</p>
                                 </div>
 
                                 <div>
@@ -223,7 +221,7 @@ export const Admin = () =>
                         <div style={{position: 'relative'}}>
                             <p>Текст сообщения</p>
                             <div className='form_elem _2'>
-                                <input {...register('string_text')} placeholder="text"/>
+                                <input {...register('stext')} placeholder="text"/>
                             </div>
 
                             <label className='checkbox'>
@@ -238,9 +236,9 @@ export const Admin = () =>
                                     <p>Скорость:</p>
                                     <input {...register('string_speed')}
                                         type="range" id="rg" min="0" max="100" defaultValue="11"
-                                    //onChange={() => {setRange(document.getElementById('rg').value)}}
+                                    onChange={() => {setRange(document.getElementById('rg').value)}}
                                     />
-                                    <p>{getValues('string_speed')}</p>
+                                    <p>{range}</p>
                                 </div>
 
                             <div>
@@ -258,7 +256,7 @@ export const Admin = () =>
                         <div>
                             <div>
                                 <p>Выбор сообщения</p>
-                                <Dropdown elems = {messages} func = {setDD4} selected = {dd4} keys = {'string_text'}/>
+                                <Dropdown elems = {messages} func = {setDD4} selected = {dd4} keys = {'stext'}/>
                             </div>
                             <div className='flex_del send'>
                                 <button className='button' onClick={() => setDelType('one')}
@@ -272,7 +270,7 @@ export const Admin = () =>
                 </div>
             }
 {/*////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
-            {dd1['name'] === 'Добавить' &&
+            { dd1['name'] === 'Добавить' &&
                 <div>
                     <p>Текстовый идентификатор</p>
                     <div className='form_elem _second'>
@@ -292,7 +290,7 @@ export const Admin = () =>
                     <Dropdown elems = {rooms} func = {setDD2} selected = {dd2} keys={'name'}/>
                     <button className='button send' type='submit'>Delete</button>
                 </div>
-                 }
+            }
         </form>
     )
 }
