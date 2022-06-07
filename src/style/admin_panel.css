@@ -6,7 +6,7 @@
   padding: 30px 30px 30px;
   width: 50vw;
   min-height: 80vh;
-  background: rgba(255, 255, 255, 0.68);
+  background: rgba(241, 241, 241, 0.91);
   -webkit-box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
   -moz-box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
   box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
@@ -50,11 +50,11 @@
   }
 }
 
-._2 {
+._second {
   margin: 1em auto;
   display: block;
 }
-._2 input {
+._second input {
   margin: 0;
   float: bottom;
 }
@@ -83,15 +83,20 @@
   display: flex;
 }
 .range p {
-  margin: auto auto auto auto;
-  width: 30px;
+  margin: auto;
+  width: 15%;
 }
 .range input[type=range] {
   border: 2px solid white;
   border-radius: 5px;
-  width: 80%;
+  width: 70%;
 }
 @media (max-width: 768px) {
+  .range input[type=range] {
+    width: 40%;
+  }
+}
+@media (max-width: 1180px) {
   .range input[type=range] {
     width: 50%;
   }

@@ -8,7 +8,7 @@ import { ChromePicker } from 'react-color';
 //import * as https from "https";
 
 const API = process.env.REACT_APP_API
-const operation = [{name: 'Update'}, {name: 'Add'}, {name: 'Delete'}]
+const operation = [{name: 'Обновить'}, {name: 'Добавить'}, {name: 'Удалить'}]
 const colors = [{name: 'one color', id:0}, {name: 'gradient', id:1}, {name: 'different color', id:2}]
 
 // const httpAgent = new https.Agent({
@@ -17,7 +17,7 @@ const colors = [{name: 'one color', id:0}, {name: 'gradient', id:1}, {name: 'dif
 
 export const Admin = () =>
 {
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, setValue, getValues} = useForm();
     const[rooms, setRooms] = useState([]);
     const[messages, setMessages] = useState([]);
     const[clr, setColor] = useState('#ffffff');
@@ -26,15 +26,15 @@ export const Admin = () =>
     const[triggerEffect, setTrigger] = useState(true);
 
     //dropdowns
-    const[dd1, setDD1] = useState(operation[0]) ;   //type
+    const[dd1, setDD1] = useState(operation[0]);    //type
     const[dd2, setDD2] = useState({});     //room
     const[dd3, setDD3] = useState(operation[0]);    //type2
     const[dd4, setDD4] = useState({});     //message
     const[dd5, setDD5] = useState(colors[0]);       //color
     //checkbox
-    const[cb, setCb] = useState(false);
+    //const[cb, setCb] = useState(false);
     //range
-    const[range, setRange] = useState(11);
+    //const[range, setRange] = useState(11);
 
     useEffect(() =>
     {
@@ -62,14 +62,20 @@ export const Admin = () =>
                 } )
                 .catch((err) => console.log(err))
         }
-
     },[dd2, rooms])
+    useEffect(() =>
+        {
+            if(Object.keys(messages).length !== 0 && dd3['name'] === 'Обновить')
+                ActualMessage(dd4)
+        }
+    ,[dd4])
+
 
     const onSubmit = (data) =>
     {
-        if(dd1['name'] === 'Update')
+        if(dd1['name'] === 'Обновить')
         {
-            if(dd3['name'] === 'Update'){
+            if(dd3['name'] === 'Обновить'){
                 data.string_color_type = dd5['id'];
                 data.string_color = dd5['name'] !== 'one color'? 0: parseInt(clr.slice(1), 16);
                 data.string_timing_type = "not now";
@@ -79,11 +85,16 @@ export const Admin = () =>
                 console.log(data)
 
                 axios.put(API + `geet/massage/${dd4['id']}`, data)
-                    .then((res) => {console.log(res); })
+                    .then((res) => {
+                        console.log(res.data)
+                        let temp = messages.findIndex( (elem) => elem === dd4 )
+                        messages[temp] = res.data
+                        setMessages(messages)
+                    })
                     .catch((err) => console.log(err))
 
             }
-            if(dd3['name'] === 'Add'){
+            if(dd3['name'] === 'Добавить'){
                 data.string_color_type = dd5['id'];
                 data.string_color = dd5['name'] !== 'one color'? 0: parseInt(clr.slice(1), 16);
                 data.string_timing_type = "not now";
@@ -96,14 +107,14 @@ export const Admin = () =>
                     {
                         console.log(res.data['id'])
                         axios.post(API + `geet/massage/${res.data['id']}/string`, {id:dd2['id']})
-                            .then((res) => {console.log(res); })
+                            .then((res) => {console.log(res); setTrigger(!triggerEffect);})
                             .catch((err) => console.log(err))
                         console.log(res)
                     })
                     .catch((err) => console.log(err))
 
             }
-            if(dd3['name'] === 'Delete'){
+            if(dd3['name'] === 'Удалить'){
                 if(delType === 'one')
                 {
                     axios.delete(API + `geet/massage/${dd4['id']}/string/${dd2['id']}`)
@@ -118,13 +129,13 @@ export const Admin = () =>
                 }
             }
         }
-        if(dd1['name'] === 'Add')
+        if(dd1['name'] === 'Добавить')
         {
             axios.post(API + 'rStrings', data)
                 .then((res) => {console.log(res); })
                 .catch((err) => console.log(err))
         }
-        if(dd1['name'] === 'Delete')
+        if(dd1['name'] === 'Удалить')
         {
             if(Object.keys(rooms).length !== 0)
             {
@@ -137,35 +148,37 @@ export const Admin = () =>
     const ActualMessage = (elem) =>
     {
         setDD4(elem)
-        document.getElementById('st').value = elem['string_text']
-        setCb(Boolean(elem['showed']))
-        setRange(elem['string_speed'])
-        document.getElementById('rg2').value = elem['string_speed']
+        setValue('string_text', elem['string_text'])
+        setValue('showed', Boolean(elem['showed']))
+        //setCb(Boolean(elem['showed']))
+        //setRange(elem['string_speed'])
+        setValue("string_speed", elem['string_speed'])
         setDD5(colors.find((el) => {return el["id"] === elem['string_color_type']}))
         setColor('#' + elem['string_color'].toString(16))
     }
+
     return(
         <form className='admin' onSubmit={handleSubmit(onSubmit)}>
            <h3>Admin panel</h3>
 
             <div className='flex center'>
-                <p>Тип запроса</p>
+                <p>Действие с устройством</p>
                 <Dropdown elems = {operation} func = {setDD1} selected = {dd1} keys={'name'}/>
             </div>
 
-            {dd1['name'] === 'Update' &&
+            {dd1['name'] === 'Обновить' &&
                 <div>
                     <div>
                         <p>Выбор аудитории</p>
                         <Dropdown elems = {rooms} func = {setDD2} selected = {dd2} keys={'name'}/>
                     </div>
                     <div>
-                        <p>Тип запроса</p>
+                        <p>Действие с сообщением</p>
                         <Dropdown elems = {operation} func = {setDD3} selected = {dd3} keys={'name'}/>
                     </div>
 
 
-                    {dd3['name'] === 'Update' &&
+                    {dd3['name'] === 'Обновить' &&
                         <div>
                             <div>
                                 <p>Выбор сообщения</p>
@@ -173,25 +186,25 @@ export const Admin = () =>
                             </div>
                             <div style={{position: 'relative'}}>
                                 <p>Текст сообщения</p>
-                                <div className='form_elem _2'>
+                                <div className='form_elem _second'>
                                     <input id='st' {...register('string_text')} placeholder="text"
                                            defaultValue={dd4['string_text'] || ''}/>
                                 </div>
 
                                 <label className='checkbox'>
                                     <input {...register('showed')}
-                                           type="checkbox" className="filled-in blue" checked={cb}
-                                           onChange={ () => { setCb(!cb) }}/>
-                                    <span>message display</span>
+                                           type="checkbox" className="filled-in blue"
+                                           />
+                                    <span>Отображение сообщения</span>
                                 </label>
                                 <div className="range-field range">
-                                    <p>speed:</p>
+                                    <p className='left'>Скорость:</p>
                                     <input {...register('string_speed')}
                                            type="range" id="rg2" min="0" max="100"
                                            defaultValue={dd4['string_text']||11}
-                                           onChange={() => {setRange(document.getElementById('rg2').value)}}
+                                           //onChange={() => {setRange(document.getElementById('rg2').value)}}
                                     />
-                                    <p>{range}</p>
+                                    <p className='right'>{getValues("string_speed")}</p>
                                 </div>
 
                                 <div>
@@ -206,7 +219,7 @@ export const Admin = () =>
                             </div>
                         </div>
                     }
-                    {dd3['name'] === 'Add' &&
+                    {dd3['name'] === 'Добавить' &&
                         <div style={{position: 'relative'}}>
                             <p>Текст сообщения</p>
                             <div className='form_elem _2'>
@@ -216,18 +229,18 @@ export const Admin = () =>
                             <label className='checkbox'>
                                 <input type="checkbox"
                                        {...register('showed')}
-                                       className="filled-in blue" checked={cb}
-                                       onChange={ () => { setCb(!cb) } }/>
-                                <span>message display</span>
+                                       className="filled-in blue"
+                                      />
+                                <span>Отображение сообщения</span>
                             </label>
 
                                 <div className="range-field range">
-                                    <p>speed:</p>
+                                    <p>Скорость:</p>
                                     <input {...register('string_speed')}
                                         type="range" id="rg" min="0" max="100" defaultValue="11"
-                                    onChange={() => {setRange(document.getElementById('rg').value)}}
+                                    //onChange={() => {setRange(document.getElementById('rg').value)}}
                                     />
-                                    <p>{range}</p>
+                                    <p>{getValues('string_speed')}</p>
                                 </div>
 
                             <div>
@@ -241,7 +254,7 @@ export const Admin = () =>
                             <button className='button' type='submit'>Add</button>
                         </div>
                     }
-                    {dd3['name'] === 'Delete' &&
+                    {dd3['name'] === 'Удалить' &&
                         <div>
                             <div>
                                 <p>Выбор сообщения</p>
@@ -259,21 +272,21 @@ export const Admin = () =>
                 </div>
             }
 {/*////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
-            {dd1['name'] === 'Add' &&
+            {dd1['name'] === 'Добавить' &&
                 <div>
-                    <p>Code</p>
-                    <div className='form_elem _2'>
+                    <p>Текстовый идентификатор</p>
+                    <div className='form_elem _second'>
                         <input {...register('code')} placeholder="code"/>
                     </div>
-                    <p>Name</p>
-                    <div className='form_elem _2'>
+                    <p>Название аудитории</p>
+                    <div className='form_elem _second'>
                         <input {...register('name')} placeholder="name"/>
                     </div>
                     <button className='button send' type='submit'>Add</button>
                 </div>
             }
 
-            { dd1['name'] === 'Delete' &&
+            { dd1['name'] === 'Удалить' &&
                 <div>
                     <p>Выбор аудитории</p>
                     <Dropdown elems = {rooms} func = {setDD2} selected = {dd2} keys={'name'}/>

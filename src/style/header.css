@@ -2,7 +2,7 @@
   display: flex;
   z-index: 3;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.68);
+  background: rgba(241, 241, 241, 0.91);
   border-bottom-left-radius: 50%;
   border-bottom-right-radius: 50%;
   box-shadow: 0 5px 33px -5px rgb(0, 0, 0) !important;

@@ -16,7 +16,7 @@ export const Header = (props) =>
             <div className="navbar-fixed">
                 <nav className="nav-wrapper bar">
                     <a href="/#" data-target="mobile-demo" className="sidenav-trigger"><i
-                        className="material-icons">menu</i></a>
+                        className="material-icons" style={{color:'black'}}>menu</i></a>
 
                     <ul id = 'bar' className='right hide-on-med-and-down'>
                         <li><a href="http://webrobo.mgul.ac.ru:3000/">webrobo</a></li>

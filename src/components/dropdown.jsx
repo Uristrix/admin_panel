@@ -6,7 +6,7 @@ export const Dropdown = (props) =>
 
     const content = props.elems !== undefined?
         props.elems.map((elem) => {
-            return <li key={elem[props.keys]} className="item"
+            return <li className="item"
                        onClick= {() => props.func(elem)}>
                 <span>{elem[props.keys]}</span>
             </li>

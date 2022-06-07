@@ -51,7 +51,7 @@
    flex-direction: column;
   }
 }
-._2{
+._second{
   margin: 1em auto;
   display: block;
   input{
@@ -92,15 +92,18 @@
 {
   display: flex;
   p{
-    margin: auto auto auto auto;
-    width: 30px;
+    margin: auto;
+    width:15%;
   }
 
   input[type=range]{
     border: 2px solid white;
     border-radius: 5px;
-    width: 80%;
+    width: 70%;
     @media (max-width: 768px) {
+      width: 40%;
+    }
+    @media (max-width: 1180px) {
       width: 50%;
     }
   }
