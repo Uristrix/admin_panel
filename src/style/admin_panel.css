@@ -1,10 +1,9 @@
 .admin {
   display: flex;
   position: relative;
-  flex-direction: column;
-  margin: 2em auto 80px auto;
+  margin: 2em auto 30px auto;
   padding: 30px 30px 30px;
-  width: 50vw;
+  width: 90vw;
   min-height: 80vh;
   background: rgba(241, 241, 241, 0.91);
   -webkit-box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
@@ -13,6 +12,15 @@
   border-radius: 30px;
   text-align: center;
 }
+.admin .flex_elem {
+  width: 33%;
+  margin: 0 30px;
+}
+@media (max-width: 768px) {
+  .admin .flex_elem {
+    width: 80%;
+  }
+}
 .admin h3 {
   margin: 0 30px 30px;
 }
@@ -20,6 +28,7 @@
   .admin {
     width: 90vw;
     margin-bottom: 50px;
+    flex-direction: column;
   }
 }
 .admin .chrome-picker {
@@ -69,6 +78,9 @@
 .checkbox [type=checkbox] + span:not(.lever) {
   line-height: 15px;
   color: #494949;
+}
+.checkbox span {
+  margin: 15px auto;
 }
 .checkbox [type=checkbox].filled-in:checked + span:not(.lever):before {
   border-right: 2px solid black;

@@ -3,10 +3,10 @@
 .admin{
   display: flex;
   position: relative;
-  flex-direction: column;
-  margin: 2em auto 80px auto;
+  //flex-direction: column;
+  margin: 2em auto 30px auto;
   padding: $indent $indent $indent;
-  width: 50vw;
+  width: 90vw;
   min-height: 80vh;
   background: $color1;
   -webkit-box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
@@ -14,12 +14,20 @@
   box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
   border-radius: $indent;
   text-align: center;
-  h3{
-    margin: 0 $indent $indent;
+  .flex_elem
+  {
+    width: 33%;
+    margin: 0 $indent;
+    @media (max-width: 768px)
+    {
+      width: 80%;
+    }
   }
+  h3{ margin: 0 $indent $indent;}
   @media (max-width: 768px) {
     width: 90vw;
     margin-bottom: 50px;
+    flex-direction: column;
   }
 
   .chrome-picker
@@ -79,7 +87,7 @@
     color:$text_color;
   }
   span{
-
+    margin: $indent/2 auto;
   }
 
   [type="checkbox"].filled-in:checked+span:not(.lever):before {

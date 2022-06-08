@@ -13,6 +13,9 @@ export const Dropdown = (props) =>
         }
     ):  <></>
 
+    const len = props.elems.length;
+const style = len < 4 ? {height: (len*135).toString() + '%'}
+        :{height:" 550%"}
     return(
             <div className="container">
                 <input className="dropdown-trigger"
@@ -21,7 +24,8 @@ export const Dropdown = (props) =>
                        value={props.selected[props.keys] || ''}
                        placeholder={props.placeholder || ''}
                 />
-                <ul className="dropdown">{content}</ul>
+                <ul className="dropdown" style ={style}>
+                    {content}</ul>
             </div>
         )
 }

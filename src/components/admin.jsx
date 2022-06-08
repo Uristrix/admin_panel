@@ -17,7 +17,7 @@ const colors = [{name: 'one color', id:0}, {name: 'gradient', id:1}, {name: 'dif
 
 export const Admin = () =>
 {
-    const { register, handleSubmit, setValue, getValues} = useForm();
+    const{ register, handleSubmit, setValue } = useForm();
     const[rooms, setRooms] = useState([]);
     const[messages, setMessages] = useState([]);
     const[clr, setColor] = useState('#ffffff');
@@ -25,9 +25,10 @@ export const Admin = () =>
 
     const[triggerEffect, setTrigger] = useState(true);
 
+    const [action, setAction] = useState('')
     //dropdowns
-    const[dd1, setDD1] = useState(operation[0]);    //type
-    const[dd2, setDD2] = useState({});     //room
+    const[dd1, setDD1] = useState({});     //room1
+    const[dd2, setDD2] = useState({});     //room2
     const[dd3, setDD3] = useState(operation[0]);    //type2
     const[dd4, setDD4] = useState({});     //message
     const[dd5, setDD5] = useState(colors[0]);       //color
@@ -42,10 +43,13 @@ export const Admin = () =>
             .then((res) => {
                 setRooms(res.data)
                 if(Object.keys(res.data).length !== 0)
+                {
+                    setDD1(res.data[0])
                     setDD2(res.data[0])
+                }
             })
             .catch((err) => console.log(err))
-    },[dd1, triggerEffect])
+    },[triggerEffect])
 
     useEffect(() =>
     {
@@ -65,7 +69,7 @@ export const Admin = () =>
     },[dd2, rooms])
     useEffect(() =>
         {
-            if(Object.keys(messages).length !== 0 && dd3['name'] === 'Добавить')
+            if(Object.keys(messages).length !== 0 && (dd3['name'] === 'Добавить' || dd3['name'] === 'Обновить'))
                 ActualMessage(dd4)
         }
     ,[dd4])
@@ -73,8 +77,9 @@ export const Admin = () =>
 
     const onSubmit = (data) =>
     {
-        if(dd1['name'] === 'Обновить')
-        {
+        console.log(clr)
+        if(action === 'Обновить') {
+            console.log(dd3)
             if(dd3['name'] === 'Обновить'){
                 data.string_color_type = dd5['id'];
                 data.string_color = dd5['name'] !== 'one color'? 0: parseInt(clr.slice(1), 16);
@@ -92,8 +97,8 @@ export const Admin = () =>
                         setMessages(messages)
                     })
                     .catch((err) => console.log(err))
-
             }
+
             if(dd3['name'] === 'Добавить'){
                 data.string_color_type = dd5['id'];
                 data.string_color = dd5['name'] !== 'one color'? 0: parseInt(clr.slice(1), 16);
@@ -112,6 +117,7 @@ export const Admin = () =>
                     .catch((err) => console.log(err))
 
             }
+
             if(dd3['name'] === 'Удалить'){
                 if(delType === 'one')
                 {
@@ -127,22 +133,23 @@ export const Admin = () =>
                 }
             }
         }
-        if(dd1['name'] === 'Добавить')
+        if(action === 'Добавить')
         {
             axios.post(API + 'rStrings', data)
-                .then((res) => {console.log(res); })
+                .then((res) => {console.log(res); setTrigger(!triggerEffect);})
                 .catch((err) => console.log(err))
-        }
-        if(dd1['name'] === 'Удалить')
+       }
+        if(action === 'Удалить')
         {
             if(Object.keys(rooms).length !== 0)
             {
-                axios.delete(API + 'rStrings/' + dd2['id'])
+                axios.delete(API + 'rStrings/' + dd1['id'])
                     .then((res) => {console.log(res); setTrigger(!triggerEffect);})
                     .catch((err) => console.log(err))
             }
         }
     }
+
     const ActualMessage = (elem) =>
     {
         setDD4(elem)
@@ -157,140 +164,152 @@ export const Admin = () =>
 
     return(
         <form className='admin' onSubmit={handleSubmit(onSubmit)}>
-           <h3>Admin panel</h3>
+            {/*<div className='flex center'>*/}
+            {/*    <p>Действие с устройством</p>*/}
+            {/*    <Dropdown elems = {operation} func = {setDD1} selected = {dd1} keys={'name'}/>*/}
+            {/*</div>*/}
 
-            <div className='flex center'>
-                <p>Действие с устройством</p>
-                <Dropdown elems = {operation} func = {setDD1} selected = {dd1} keys={'name'}/>
+            {/*{dd1['name'] === 'Обновить' &&*/}
+            {/*Удаление аудитории*/}
+            <div className="flex_elem">
+                <p>Выбор аудитории</p>
+                <Dropdown elems = {rooms} func = {setDD1} selected = {dd1} keys={'name'}/>
+                <button className='button send' type='submit'
+                        onClick={ () => setAction('Удалить') }
+                >Удалить</button>
             </div>
-
-            {dd1['name'] === 'Обновить' &&
+            {/* Изменение блять*/}
+            <div className="flex_elem">
                 <div>
-                    <div>
-                        <p>Выбор аудитории</p>
-                        <Dropdown elems = {rooms} func = {setDD2} selected = {dd2} keys={'name'}/>
-                    </div>
-                    <div>
-                        <p>Действие с сообщением</p>
-                        <Dropdown elems = {operation} func = {setDD3} selected = {dd3} keys={'name'}/>
-                    </div>
+                    <p>Выбор аудитории</p>
+                    <Dropdown elems = {rooms} func = {setDD2} selected = {dd2} keys={'name'}/>
+                </div>
+                <div>
+                    <p>Действие с сообщением</p>
+                    <Dropdown elems = {operation} func = {setDD3} selected = {dd3} keys={'name'}/>
+                </div>
 
-
-                    {dd3['name'] === 'Обновить' &&
+                {dd3['name'] === 'Обновить' &&
+                    <div>
                         <div>
-                            <div>
-                                <p>Выбор сообщения</p>
-                                <Dropdown elems = {messages} func = {ActualMessage} selected = {dd4} keys={'stext'}/>
-                            </div>
-                            <div style={{position: 'relative'}}>
-                                <p>Текст сообщения</p>
-                                <div className='form_elem _second'>
-                                    <input id='st' {...register('stext')} placeholder="text"
-                                           defaultValue={dd4['stext'] || ''}/>
-                                </div>
-
-                                <label className='checkbox'>
-                                    <input {...register('showed')}
-                                           type="checkbox" className="filled-in blue"
-                                           />
-                                    <span>Отображение сообщения</span>
-                                </label>
-                                <div className="range-field range">
-                                    <p className='left'>Скорость:</p>
-                                    <input {...register('string_speed')}
-                                           type="range" id="rg2" min="0" max="100"
-                                           defaultValue={dd4['stext']||11}
-                                           onChange={() => {setRange(document.getElementById('rg2').value)}}
-                                    />
-                                    <p>{range}</p>
-                                </div>
-
-                                <div>
-                                    <p>Выбор типа цвета</p>
-                                    <Dropdown elems = {colors} func = {setDD5} selected = {dd5} keys={'name'}/>
-                                </div>
-                                {dd5['name'] === 'one color' && <ChromePicker  color = {clr}
-                                                                       onChangeComplete ={ (color) => {setColor(color['hex'])}}
-                                />}
-
-                                <button className='button' type='submit'>Update</button>
-                            </div>
+                            <p>Выбор сообщения</p>
+                            <Dropdown elems = {messages} func = {ActualMessage} selected = {dd4} keys={'stext'}/>
                         </div>
-                    }
-                    {dd3['name'] === 'Добавить' &&
                         <div style={{position: 'relative'}}>
                             <p>Текст сообщения</p>
-                            <div className='form_elem _2'>
-                                <input {...register('stext')} placeholder="text"/>
+                            <div className='form_elem _second'>
+                                <input id='st' {...register('stext')} placeholder="text"
+                                       defaultValue={dd4['stext'] || ''}/>
                             </div>
 
                             <label className='checkbox'>
-                                <input type="checkbox"
-                                       {...register('showed')}
-                                       className="filled-in blue"
-                                      />
+                                <input {...register('showed')}
+                                       type="checkbox" className="filled-in blue"
+                                />
                                 <span>Отображение сообщения</span>
                             </label>
-
-                                <div className="range-field range">
-                                    <p>Скорость:</p>
-                                    <input {...register('string_speed')}
-                                        type="range" id="rg" min="0" max="100" defaultValue="11"
-                                    onChange={() => {setRange(document.getElementById('rg').value)}}
-                                    />
-                                    <p>{range}</p>
-                                </div>
+                            <p>Скорость строки</p>
+                            <div className="range-field range">
+                                <p> </p>
+                                <input {...register('string_speed')}
+                                       type="range" id="rg2" min="0" max="100"
+                                       defaultValue={dd4['stext']||11}
+                                       onChange={() => {setRange(document.getElementById('rg2').value)}}
+                                />
+                                <p>{range}</p>
+                            </div>
 
                             <div>
                                 <p>Выбор типа цвета</p>
                                 <Dropdown elems = {colors} func = {setDD5} selected = {dd5} keys={'name'}/>
                             </div>
                             {dd5['name'] === 'one color' && <ChromePicker  color = {clr}
-                                               onChangeComplete ={ (color) => {setColor(color['hex'])}}
-                                               />}
+                                                                           onChangeComplete ={ (color) => {setColor(color['hex'])}}
+                            />}
 
-                            <button className='button' type='submit'>Add</button>
+                            <button className='button' type='submit'
+                            onClick={ () => setAction('Обновить') }
+                            >Изменить</button>
                         </div>
-                    }
-                    {dd3['name'] === 'Удалить' &&
+                    </div>
+                }
+                {dd3['name'] === 'Добавить' &&
+                    <div style={{position: 'relative'}}>
+                        <p>Текст сообщения</p>
+                        <div className='form_elem _2'>
+                            <input {...register('stext')} placeholder="text"/>
+                        </div>
+
+                        <label className='checkbox'>
+                            <input type="checkbox"
+                                   {...register('showed')}
+                                   className="filled-in blue"
+                            />
+                            <span>Отображение сообщения</span>
+                        </label>
+                        <p>Скорость строки</p>
+                        <div className="range-field range">
+                            <p> </p>
+                            <input {...register('string_speed')}
+                                   type="range" id="rg" min="0" max="100" defaultValue="11"
+                                   onChange={() => {setRange(document.getElementById('rg').value)}}
+                            />
+                            <p>{range}</p>
+                        </div>
+
                         <div>
-                            <div>
-                                <p>Выбор сообщения</p>
-                                <Dropdown elems = {messages} func = {setDD4} selected = {dd4} keys = {'stext'}/>
-                            </div>
-                            <div className='flex_del send'>
-                                <button className='button' onClick={() => setDelType('one')}
-                                        type='submit'>Delete for one</button>
-                                <button className='button' onClick={() => setDelType('all')}
-                                        type='submit'>Delete for all</button>
-                            </div>
+                            <p>Выбор типа цвета</p>
+                            <Dropdown elems = {colors} func = {setDD5} selected = {dd5} keys={'name'}/>
                         </div>
-                    }
+                        {dd5['name'] === 'one color' && <ChromePicker  color = {clr}
+                                                                       onChangeComplete ={ (color) => {setColor(color['hex'])}}
+                        />}
 
-                </div>
-            }
-{/*////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
-            { dd1['name'] === 'Добавить' &&
-                <div>
-                    <p>Текстовый идентификатор</p>
-                    <div className='form_elem _second'>
-                        <input {...register('code')} placeholder="code"/>
+                        <button className='button' type='submit'
+                                onClick={ () => setAction('Обновить') }
+                        >Добавить</button>
                     </div>
-                    <p>Название аудитории</p>
-                    <div className='form_elem _second'>
-                        <input {...register('name')} placeholder="name"/>
+                }
+                {dd3['name'] === 'Удалить' &&
+                    <div>
+                        <div>
+                            <p>Выбор сообщения</p>
+                            <Dropdown elems = {messages} func = {setDD4} selected = {dd4} keys = {'stext'}/>
+                        </div>
+                        <div className='flex_del send'>
+                            <button className='button'
+                                    onClick={() => {setDelType('one'); setAction('Обновить') }}
+                                        type='submit'>Удалить для одного</button>
+                            <button className='button'
+                                    onClick={() => {setDelType('all'); setAction('Обновить')}}
+                                        type='submit'>Удалить для всех</button>
+                        </div>
                     </div>
-                    <button className='button send' type='submit'>Add</button>
-                </div>
-            }
+                }
 
-            { dd1['name'] === 'Удалить' &&
-                <div>
-                    <p>Выбор аудитории</p>
-                    <Dropdown elems = {rooms} func = {setDD2} selected = {dd2} keys={'name'}/>
-                    <button className='button send' type='submit'>Delete</button>
+            </div>
+            {/*}*/}
+
+            {/*Добавление аудитории*/}
+{/*            { dd1['name'] === 'Добавить' &&*/}
+            <div className="flex_elem">
+                <p>Текстовый идентификатор</p>
+                <div className='form_elem _second'>
+                    <input {...register('code')} placeholder="code"/>
                 </div>
-            }
+                <p>Название аудитории</p>
+                <div className='form_elem _second'>
+                    <input {...register('name')} placeholder="name"/>
+                </div>
+                <button className='button send' type='submit'
+                        onClick={ () => setAction('Добавить') }
+                >Добавить</button>
+            </div>
+            {/*}*/}
+
+            {/*{ dd1['name'] === 'Удалить' &&*/}
+
+            {/*}*/}
         </form>
     )
 }
