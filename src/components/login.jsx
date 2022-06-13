@@ -5,6 +5,7 @@ import {useForm} from "react-hook-form";
 import { observer } from "mobx-react-lite";
 import '../style/login.css'
 import store from "../store/appStore";
+import {NotificationManager} from "react-notifications";
 //import {useCookies} from "react-cookie";
 
 const _login = process.env.REACT_APP_LOGIN
@@ -25,13 +26,16 @@ export const Login = observer(() =>
         if(data['login'] === _login && data['password'] === _password)
         {
             store.loginStatus = 'auth'
+            store.pageStatus = 'admin'
             //setCookie('ticker', data['login']+'|'+data['password'])
         }
 
-
         else
+        {
             updateError(true)
-        console.log(store.loginStatus)
+            NotificationManager.error('Неверный логин или пароль', '', 1000)
+        }
+
     }
 
     useEffect(
@@ -42,7 +46,7 @@ export const Login = observer(() =>
     , [error_login])
 
     return(
-        <form className= {'login' + (error_login ? ' error': '')} onSubmit={handleSubmit(onSubmit)}>
+        <form className= {'login' + (error_login ? ' error_login': '')} onSubmit={handleSubmit(onSubmit)}>
             <h3>Login</h3>
 
             <div className='form_elem'>

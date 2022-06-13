@@ -4,38 +4,22 @@ import {useForm} from "react-hook-form";
 import {Dropdown} from "./dropdown";
 import axios from 'axios'
 
-import { ChromePicker } from 'react-color';
-//import * as https from "https";
-
+import {observer} from "mobx-react-lite";
+import 'react-notifications/src/notifications.scss'
+import {NotificationManager} from 'react-notifications';
+import store from '../store/appStore'
 const API = process.env.REACT_APP_API
-const operation = [{name: 'Обновить'}, {name: 'Добавить'}, {name: 'Удалить'}]
-const colors = [{name: 'one color', id:0}, {name: 'gradient', id:1}, {name: 'different color', id:2}]
 
-// const httpAgent = new https.Agent({
-//     rejectUnauthorized: false // (NOTE: this will disable client verification)
-// } )
-
-export const Admin = () =>
+export const Admin = observer(() =>
 {
-    const{ register, handleSubmit, setValue } = useForm();
+    const{ register, handleSubmit } = useForm();
     const[rooms, setRooms] = useState([]);
-    const[messages, setMessages] = useState([]);
-    const[clr, setColor] = useState('#ffffff');
-    const[delType, setDelType] = useState('')
+    const[col, setCol] = useState('')
 
     const[triggerEffect, setTrigger] = useState(true);
-
     const [action, setAction] = useState('')
     //dropdowns
-    const[dd1, setDD1] = useState({});     //room1
-    const[dd2, setDD2] = useState({});     //room2
-    const[dd3, setDD3] = useState(operation[0]);    //type2
-    const[dd4, setDD4] = useState({});     //message
-    const[dd5, setDD5] = useState(colors[0]);       //color
-    //checkbox
-    //const[cb, setCb] = useState(false);
-    //range
-    const[range, setRange] = useState(11);
+    const[dd, setDD] = useState({});     //room1
 
     useEffect(() =>
     {
@@ -43,10 +27,7 @@ export const Admin = () =>
             .then((res) => {
                 setRooms(res.data)
                 if(Object.keys(res.data).length !== 0)
-                {
-                    setDD1(res.data[0])
-                    setDD2(res.data[0])
-                }
+                    setDD(res.data[0])
             })
             .catch((err) => console.log(err))
     },[triggerEffect])
@@ -55,261 +36,174 @@ export const Admin = () =>
     {
         if(Object.keys(rooms).length !== 0)
         {
-            const id = rooms.find((el) => {return el['name'] === dd2['name']} )['id']
-            axios.get(API + `geet/string/${id}/massage` )
-                .then((res) => {
-                    console.log(res.data)
-                    setMessages(res.data)
-                    if(Object.keys(res.data).length !== 0)
-                        setDD4(res.data[0])
-                    else setDD4({})
-                } )
+            axios.get(API + `geet/string/${dd['id']}/massageS` )
+                .then((res) => {store.massageS = res.data})
+                .catch((err) => console.log(err))
+
+            axios.get(API + `geet/string/${dd['id']}/massageNS` )
+                .then((res) => {store.massageN = res.data})
                 .catch((err) => console.log(err))
         }
-    },[dd2, rooms])
-    useEffect(() =>
-        {
-            if(Object.keys(messages).length !== 0 && (dd3['name'] === 'Добавить' || dd3['name'] === 'Обновить'))
-                ActualMessage(dd4)
-        }
-    ,[dd4])
+    },[dd, rooms])
 
+    useEffect( () =>
+    {
+        if(col === 'S')
+        {
+            for(let el in store.massageN)
+                store.updateN(el, false)
+        }
+
+        if(col === 'N')
+        {
+            for(let el in store.massageS)
+                store.updateS(el, false)
+        }
+    }, [col])
 
     const onSubmit = (data) =>
     {
-        console.log(clr)
-        if(action === 'Обновить') {
-            console.log(dd3)
-            if(dd3['name'] === 'Обновить'){
-                data.string_color_type = dd5['id'];
-                data.string_color = dd5['name'] !== 'one color'? 0: parseInt(clr.slice(1), 16);
-                data.string_timing_type = "not now";
-                data.string_timing = "not now";
-                data.string_speed = +data.string_speed;
-                data.showed = +data.showed;
-                console.log(data)
-
-                axios.put(API + `geet/massage/${dd4['id']}`, data)
-                    .then((res) => {
-                        console.log(res.data)
-                        let temp = messages.findIndex( (elem) => elem === dd4 )
-                        messages[temp] = res.data
-                        setMessages(messages)
-                    })
-                    .catch((err) => console.log(err))
+        if(action === 'Обновить_1')
+        {
+            const temp = col !== 'S'? col === 'N'? store.massageN: []: store.massageS
+            if(temp.length === 0) NotificationManager.error('Не выбраны элементы запроса', '', 3000)
+            for(const el of temp)
+            {
+                if(el["selected"] === true)
+                    axios.put(API + `geet/massage/${el['id']}/showed`, {showed: col === 'S'?0:1})
+                        .then((res) => {
+                            console.log(res.data)
+                            setTrigger(!triggerEffect);
+                            NotificationManager.success('Сообщения обновлены', '', 3000)
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            NotificationManager.error('Ошибка обновления сообщений', '', 3000)
+                        })
             }
+        }
 
-            if(dd3['name'] === 'Добавить'){
-                data.string_color_type = dd5['id'];
-                data.string_color = dd5['name'] !== 'one color'? 0: parseInt(clr.slice(1), 16);
-                data.string_timing_type = "not now";
-                data.string_timing = "not now";
-                data.string_speed = +data.string_speed;
-                data.showed = +data.showed;
-
-                axios.post(API + 'geet/massage', data)
-                    .then((res) =>
-                    {
-                        axios.post(API + `geet/massage/${res.data['id']}/string`, {id:dd2['id']})
-                            .then((res) => {console.log(res); setTrigger(!triggerEffect);})
-                            .catch((err) => console.log(err))
-                    })
-                    .catch((err) => console.log(err))
-
-            }
-
-            if(dd3['name'] === 'Удалить'){
-                if(delType === 'one')
+        if(action === 'Обновить_2')
+        {
+            const temp = col !== 'S'? col === 'N'?  store.massageN: []: store.massageS
+            if(temp.length === 0) NotificationManager.error('Не выбраны элементы запроса', '', 3000)
+            for(const el of temp)
+            {
+                if(el['selected'] === true)
                 {
-                    axios.delete(API + `geet/massage/${dd4['id']}/string/${dd2['id']}`)
-                        .then((res) => {console.log(res); setTrigger(!triggerEffect);})
-                        .catch((err) => console.log(err))
+                    axios.delete(API + `geet/massage/${el['id']}`)
+                        .then((res) => {
+                            console.log(res);
+                            setTrigger(!triggerEffect);
+                            NotificationManager.success('Сообщения удалены', '', 3000)
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            NotificationManager.error('Ошибка удаления сообщений', '', 3000)})
+                    }
                 }
-                if(delType === 'all')
-                {
-                    axios.delete(API + `geet/massage/${dd4['id']}`)
-                        .then((res) => {console.log(res); setTrigger(!triggerEffect);})
-                        .catch((err) => console.log(err))
-                }
-            }
         }
         if(action === 'Добавить')
         {
             axios.post(API + 'rStrings', data)
-                .then((res) => {console.log(res); setTrigger(!triggerEffect);})
-                .catch((err) => console.log(err))
+                .then((res) => {
+                    console.log(res);
+                    setTrigger(!triggerEffect);
+                    NotificationManager.success('Аудитория добавлена', '', 3000)
+                })
+                .catch((err) => {
+                    console.log(err);
+                    NotificationManager.error('Ошибка добавление аудитории', '', 3000)
+                })
        }
         if(action === 'Удалить')
         {
             if(Object.keys(rooms).length !== 0)
             {
-                axios.delete(API + 'rStrings/' + dd1['id'])
-                    .then((res) => {console.log(res); setTrigger(!triggerEffect);})
-                    .catch((err) => console.log(err))
+                axios.delete(API + 'rStrings/' + dd['id'])
+                    .then((res) => {
+                        console.log(res);
+                        setTrigger(!triggerEffect);
+                        NotificationManager.success('Аудитория удалена', '', 3000)
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        NotificationManager.error('Ошибка удаления аудитории', '', 3000)
+                    })
             }
         }
     }
 
-    const ActualMessage = (elem) =>
-    {
-        setDD4(elem)
-        setValue('stext', elem['stext'])
-        setValue('showed', Boolean(elem['showed']))
-        //setCb(Boolean(elem['showed']))
-        setRange(elem['string_speed'])
-        setValue("string_speed", elem['string_speed'])
-        setDD5(colors.find((el) => {return el["id"] === elem['string_color_type']}))
-        setColor('#' + elem['string_color'].toString(16))
-    }
-
     return(
         <form className='admin' onSubmit={handleSubmit(onSubmit)}>
-            {/*<div className='flex center'>*/}
-            {/*    <p>Действие с устройством</p>*/}
-            {/*    <Dropdown elems = {operation} func = {setDD1} selected = {dd1} keys={'name'}/>*/}
-            {/*</div>*/}
-
-            {/*{dd1['name'] === 'Обновить' &&*/}
             {/*Удаление аудитории*/}
-            <div className="flex_elem">
-                <p>Выбор аудитории</p>
-                <Dropdown elems = {rooms} func = {setDD1} selected = {dd1} keys={'name'}/>
-                <button className='button send' type='submit'
-                        onClick={ () => setAction('Удалить') }
-                >Удалить</button>
+            <div className='flex_elem '>
+                <div>
+                    <h6>Выбор аудитории</h6>
+                    <Dropdown elems = {rooms} func = {setDD} selected = {dd} keys={'name'}/>
+                    <button className='button send' type='submit'
+                            onClick={ () => setAction('Удалить') }
+                    >Удалить</button>
+                </div>
+
+                {/*Добавление аудитории*/}
+                <div>
+                    <h6>Текстовый идентификатор</h6>
+                    <div className='form_elem _second'>
+                        <input {...register('code')} placeholder="code"/>
+                    </div>
+                    <h6>Название аудитории</h6>
+                    <div className='form_elem _second'>
+                        <input {...register('name')} placeholder="name"/>
+                    </div>
+                    <button className='button send' type='submit'
+                            onClick={ () => setAction('Добавить') }
+                    >Добавить</button>
+                </div>
             </div>
+
             {/* Изменение блять*/}
-            <div className="flex_elem">
-                <div>
-                    <p>Выбор аудитории</p>
-                    <Dropdown elems = {rooms} func = {setDD2} selected = {dd2} keys={'name'}/>
-                </div>
-                <div>
-                    <p>Действие с сообщением</p>
-                    <Dropdown elems = {operation} func = {setDD3} selected = {dd3} keys={'name'}/>
-                </div>
-
-                {dd3['name'] === 'Обновить' &&
+            <div className='flex_elem update'>
+                <div className= 'lists'>
                     <div>
-                        <div>
-                            <p>Выбор сообщения</p>
-                            <Dropdown elems = {messages} func = {ActualMessage} selected = {dd4} keys={'stext'}/>
-                        </div>
-                        <div style={{position: 'relative'}}>
-                            <p>Текст сообщения</p>
-                            <div className='form_elem _second'>
-                                <input id='st' {...register('stext')} placeholder="text"
-                                       defaultValue={dd4['stext'] || ''}/>
-                            </div>
-
-                            <label className='checkbox'>
-                                <input {...register('showed')}
-                                       type="checkbox" className="filled-in blue"
-                                />
-                                <span>Отображение сообщения</span>
-                            </label>
-                            <p>Скорость строки</p>
-                            <div className="range-field range">
-                                <p> </p>
-                                <input {...register('string_speed')}
-                                       type="range" id="rg2" min="0" max="100"
-                                       defaultValue={dd4['stext']||11}
-                                       onChange={() => {setRange(document.getElementById('rg2').value)}}
-                                />
-                                <p>{range}</p>
-                            </div>
-
-                            <div>
-                                <p>Выбор типа цвета</p>
-                                <Dropdown elems = {colors} func = {setDD5} selected = {dd5} keys={'name'}/>
-                            </div>
-                            {dd5['name'] === 'one color' && <ChromePicker  color = {clr}
-                                                                           onChangeComplete ={ (color) => {setColor(color['hex'])}}
-                            />}
-
-                            <button className='button' type='submit'
-                            onClick={ () => setAction('Обновить') }
-                            >Изменить</button>
-                        </div>
+                        <h6>Неотображающиеся сообщения</h6>
+                        <ul className='list'>
+                            {store.massageN.map ( (el, i) => {
+                                return <li className={`li_elem${el['selected'] === true? ' select': ''}`}
+                                           onClick={ () => {
+                                               store.updateN(i, !el['selected']);
+                                               setCol('N');
+                                           } }
+                                >{el['stext']}</li> })}
+                        </ul>
                     </div>
-                }
-                {dd3['name'] === 'Добавить' &&
-                    <div style={{position: 'relative'}}>
-                        <p>Текст сообщения</p>
-                        <div className='form_elem _2'>
-                            <input {...register('stext')} placeholder="text"/>
-                        </div>
 
-                        <label className='checkbox'>
-                            <input type="checkbox"
-                                   {...register('showed')}
-                                   className="filled-in blue"
-                            />
-                            <span>Отображение сообщения</span>
-                        </label>
-                        <p>Скорость строки</p>
-                        <div className="range-field range">
-                            <p> </p>
-                            <input {...register('string_speed')}
-                                   type="range" id="rg" min="0" max="100" defaultValue="11"
-                                   onChange={() => {setRange(document.getElementById('rg').value)}}
-                            />
-                            <p>{range}</p>
-                        </div>
-
-                        <div>
-                            <p>Выбор типа цвета</p>
-                            <Dropdown elems = {colors} func = {setDD5} selected = {dd5} keys={'name'}/>
-                        </div>
-                        {dd5['name'] === 'one color' && <ChromePicker  color = {clr}
-                                                                       onChangeComplete ={ (color) => {setColor(color['hex'])}}
-                        />}
-
-                        <button className='button' type='submit'
-                                onClick={ () => setAction('Обновить') }
-                        >Добавить</button>
-                    </div>
-                }
-                {dd3['name'] === 'Удалить' &&
                     <div>
-                        <div>
-                            <p>Выбор сообщения</p>
-                            <Dropdown elems = {messages} func = {setDD4} selected = {dd4} keys = {'stext'}/>
-                        </div>
-                        <div className='flex_del send'>
-                            <button className='button'
-                                    onClick={() => {setDelType('one'); setAction('Обновить') }}
-                                        type='submit'>Удалить для одного</button>
-                            <button className='button'
-                                    onClick={() => {setDelType('all'); setAction('Обновить')}}
-                                        type='submit'>Удалить для всех</button>
-                        </div>
+                        <h6>Отображающиеся сообщения</h6>
+                        <ul className='list'>
+                            { store.massageS.map ( (el, i) => {
+                                return <li className={`li_elem${el['selected'] === true? ' select': ''}`}
+                                           onClick={ () => {
+                                               store.updateS(i, !el['selected']);
+                                               setCol('S');
+                                           } }
+                                >{el['stext']}</li> })}
+                        </ul>
                     </div>
-                }
+
+                </div>
+
+                <div className='send flex_del'>
+                    <button className='button' type='submit'
+                            onClick={ () => setAction('Обновить_1') }
+                    >Сменить флаг</button>
+
+                    <button className='button' type='submit'
+                            onClick={ () => setAction('Обновить_2') }
+                    >Удалить</button>
+                </div>
 
             </div>
-            {/*}*/}
-
-            {/*Добавление аудитории*/}
-{/*            { dd1['name'] === 'Добавить' &&*/}
-            <div className="flex_elem">
-                <p>Текстовый идентификатор</p>
-                <div className='form_elem _second'>
-                    <input {...register('code')} placeholder="code"/>
-                </div>
-                <p>Название аудитории</p>
-                <div className='form_elem _second'>
-                    <input {...register('name')} placeholder="name"/>
-                </div>
-                <button className='button send' type='submit'
-                        onClick={ () => setAction('Добавить') }
-                >Добавить</button>
-            </div>
-            {/*}*/}
-
-            {/*{ dd1['name'] === 'Удалить' &&*/}
-
-            {/*}*/}
         </form>
     )
-}
+})

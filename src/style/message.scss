@@ -1,0 +1,59 @@
+@import 'constants';
+
+.message
+{
+  display: block;
+  padding-right: 25%;
+  padding-left: 25%;
+  @media (max-width: 768px){
+    padding: $indent;
+  }
+//  position: absolute;
+//  align-items: center;
+//  top:100px;
+//  right: 0;
+//  width:400px;
+//  height: 30px;
+//  margin-bottom: $indent/3;
+//  border-top-left-radius: 30px;
+//  border-bottom-left-radius: 30px;
+//  border: 2px solid white;
+//  color: $color1;
+//  animation: SlideLeft 0.5s;
+//
+//  -webkit-box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
+//  -moz-box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
+//  box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
+//  p{
+//    width:300px;
+//    margin: $indent / 2 $indent / 2;
+//    word-wrap: break-word;
+//  }
+//  .bar {
+//    height: 4px;
+//    width: 80%;
+//    margin: 0 20px;
+//  }
+//}
+//.error
+//{
+//  background: #e83d3d;
+//}
+//.success
+//{
+//  background: #7ac529;
+//}
+//
+//.exit{
+//  animation: opac 0.5s linear;
+//}
+//
+//@keyframes SlideLeft {
+//  from {margin-left: 120%; opacity: 0}
+//  to   {margin-left: 0; opacity: 1}
+//}
+//
+//@keyframes opac{
+//  from{opacity: 1}
+//  to{opacity: 0}
+}

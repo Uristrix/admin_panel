@@ -1,20 +1,22 @@
 import React from "react";
 
 import {Header} from "../components/header";
-import {Admin} from "../components/admin";
 import {Footer} from "../components/footer";
+import {Massage} from "../components/massage";
 
-const Admin_page = () =>
+const Massage_page = () =>
 {
     return(
-        <div className='page'>
+        <div>
             <Header/>
+
             <main>
-                <Admin/>
+                <Massage/>
             </main>
+
             <Footer/>
         </div>
     )
 }
 
-export default  Admin_page;
+export default  Massage_page;

@@ -2,27 +2,80 @@
   display: flex;
   position: relative;
   margin: 2em auto 30px auto;
-  padding: 30px 30px 30px;
+  padding: 24px 24px 24px;
   width: 90vw;
   min-height: 80vh;
   background: rgba(241, 241, 241, 0.91);
   -webkit-box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
   -moz-box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
   box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
-  border-radius: 30px;
+  border-radius: 24px;
   text-align: center;
 }
 .admin .flex_elem {
   width: 33%;
-  margin: 0 30px;
+  margin: 0 24px;
 }
 @media (max-width: 768px) {
   .admin .flex_elem {
     width: 80%;
   }
 }
-.admin h3 {
-  margin: 0 30px 30px;
+.admin .update {
+  display: flex;
+  flex-direction: column;
+  width: 67%;
+}
+@media (max-width: 768px) {
+  .admin .update {
+    width: 90%;
+    margin: auto;
+  }
+}
+.admin .update .lists {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+@media (max-width: 768px) {
+  .admin .update .lists {
+    flex-direction: column;
+  }
+}
+.admin .update .lists .list {
+  background-color: white;
+  border-radius: 24px;
+  border: 3px solid #21d4fd;
+  height: 293px;
+  width: 250px;
+  margin: auto;
+  overflow-y: scroll;
+  text-align: left;
+  text-decoration: none;
+  list-style-type: none;
+}
+@media (max-width: 768px) {
+  .admin .update .lists .list {
+    width: 100%;
+    margin-bottom: 24px;
+  }
+}
+.admin .update .lists .list ::-webkit-scrollbar {
+  display: none;
+}
+.admin .update .lists .list .li_elem {
+  padding: 8px;
+  border-radius: 24px;
+}
+.admin .update .lists .list .li_elem:hover {
+  background-color: #f2f2f2;
+  cursor: pointer;
+}
+.admin .update .lists .list .select {
+  font-weight: bold;
+}
+.admin h3, .admin h4, .admin h5, .admin h6 {
+  margin: 0 24px 24px;
 }
 @media (max-width: 768px) {
   .admin {
@@ -32,21 +85,22 @@
   }
 }
 .admin .chrome-picker {
-  margin: 15px auto 0 auto;
+  margin: 12px auto 0 auto;
 }
 
 .send {
-  margin: 60px auto;
+  margin: 48px auto;
 }
 @media (max-width: 768px) {
   .send {
-    margin: 30px auto;
+    margin: 24px auto;
   }
 }
 
 .flex_del {
   display: flex;
   justify-content: space-between;
+  margin: 19.2px auto;
   width: 100%;
 }
 @media (max-width: 768px) {
@@ -65,7 +119,7 @@
 }
 
 .checkbox {
-  margin: 30px auto;
+  margin: 24px auto;
 }
 .checkbox [type=checkbox].filled-in:not(:checked) + span:not(.lever):after {
   background-color: white;
@@ -80,7 +134,7 @@
   color: #494949;
 }
 .checkbox span {
-  margin: 15px auto;
+  margin: 12px auto;
 }
 .checkbox [type=checkbox].filled-in:checked + span:not(.lever):before {
   border-right: 2px solid black;

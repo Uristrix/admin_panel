@@ -1,16 +1,19 @@
 import React from "react";
 import '../style/header.css'
+import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect} from 'react';
 import M from "materialize-css";
-
-export const Header = (props) =>
+import {observer} from "mobx-react-lite";
+import store from '../store/appStore'
+export const Header = observer(() =>
 {
+    const navigate = useNavigate();
+    const location = useLocation();
     useEffect(() =>
     {
             let elems = document.querySelectorAll('.sidenav');
             M.Sidenav.init(elems);
     }, [])
-
     return(
         <header>
             <div className="navbar-fixed">
@@ -23,8 +26,22 @@ export const Header = (props) =>
                         <li><a href="http://dbrobo.mgul.ac.ru/">dbrobo</a></li>
                         <li><a href="http://dokuwiki.mgul.ac.ru/dokuwiki/doku.php">dokuwiki</a></li>
                         <li><a href="https://rasp.msfu.ru/">Расписание</a></li>
-                        {props.func !== undefined &&
-                            <li><a href="/#" onClick={props.func} >Exit</a></li>}
+
+                        {location.pathname !== '/message' &&
+                            <li onClick={ () => {navigate('/message') } }>
+                                <a href='#'>Добавление сообщения</a>
+                            </li>}
+
+                        {location.pathname === '/message' &&
+                            <li onClick={
+                                () => {store.loginStatus === 'auth'? navigate('/admin_ticker') : navigate('/login')}}>
+                                <a href='#'>Назад</a>
+                            </li>}
+
+                        {location.pathname === '/admin_ticker' &&
+                            <li onClick={() => {store.pageStatus = 'login';store.loginStatus = 'notAuth';}}>
+                                <a href="#">Выход</a>
+                            </li>}
                     </ul>
                 </nav>
             </div>
@@ -34,9 +51,23 @@ export const Header = (props) =>
                 <li><a href="http://dbrobo.mgul.ac.ru/">dbrobo</a></li>
                 <li><a href="http://dokuwiki.mgul.ac.ru/dokuwiki/doku.php">dokuwiki</a></li>
                 <li><a href="https://rasp.msfu.ru/">Расписание</a></li>
-                {props.func !== undefined &&
-                    <li><a href="/#" onClick={props.func} >Exit</a></li>}
+
+                {location.pathname !== '/message' &&
+                    <li onClick={ () => {navigate('/message') } }>
+                        <a href='#'>Добавление сообщения</a>
+                    </li>}
+
+                {location.pathname === '/message' &&
+                    <li onClick={
+                        () => {store.loginStatus === 'auth'? navigate('/admin_ticker') : navigate('/login')}}>
+                        <a href='#'>Назад</a>
+                    </li>}
+
+                {location.pathname === '/admin_ticker' &&
+                    <li onClick={() => {store.pageStatus = 'login';store.loginStatus = 'notAuth';}}>
+                        <a href="#">Выход</a>
+                    </li>}
             </ul>
         </header>
     )
-}
+})

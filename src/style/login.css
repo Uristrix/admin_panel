@@ -1,7 +1,7 @@
 .form_elem {
   position: relative;
   width: 100%;
-  margin: 30px auto 0;
+  margin: 24px auto 0;
 }
 .form_elem .icon {
   position: absolute;
@@ -43,7 +43,7 @@
   font-weight: 600;
   color: white;
   cursor: pointer;
-  margin: 30px auto 0 auto;
+  margin: 24px auto 0 auto;
   height: 55px;
   text-align: center;
   border: none;
@@ -73,8 +73,8 @@
   width: 600px;
   background: rgba(241, 241, 241, 0.91);
   color: #494949;
-  padding: 30px;
-  border-radius: 30px 30px 30% 30%;
+  padding: 24px;
+  border-radius: 24px 24px 30% 30%;
   text-align: center;
   -webkit-box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
   -moz-box-shadow: 0 5px 33px -5px rgb(0, 0, 0);
@@ -94,7 +94,7 @@
 .login .form_elem {
   position: relative;
   width: 100%;
-  margin: 30px auto 0;
+  margin: 24px auto 0;
 }
 .login .form_elem .icon {
   position: absolute;
@@ -127,13 +127,13 @@
   background: white;
 }
 
-.error {
+.error_login {
   animation: shiver 0.3s linear;
 }
-.error .form_elem input, .error .form_elem input:-webkit-autofill {
+.error_login .form_elem input, .error_login .form_elem input:-webkit-autofill {
   border: 3px solid red;
 }
-.error .form_elem input:focus, .error .form_elem input:-webkit-autofill:focus {
+.error_login .form_elem input:focus, .error_login .form_elem input:-webkit-autofill:focus {
   border-color: red;
 }
 

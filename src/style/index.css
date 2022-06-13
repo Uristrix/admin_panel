@@ -14,4 +14,11 @@ body {
   position: relative;
 }
 
+.messages {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  z-index: 5;
+}
+
 /*# sourceMappingURL=index.css.map */
