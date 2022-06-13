@@ -198,7 +198,7 @@ export const Admin = observer(() =>
                 <div className='send flex_del'>
                     <button className='button' type='submit'
                             onClick={ () => setAction('Обновить_1') }
-                    >Сменить флаг</button>
+                    >Сменить отображение</button>
 
                     <button className='button' type='submit'
                             onClick={ () => setAction('Обновить_2') }
