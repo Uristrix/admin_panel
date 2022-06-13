@@ -4,7 +4,7 @@ import {ChromePicker} from "react-color";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 import {NotificationManager} from "react-notifications";
-import '../style/message.css'
+import '../style/massage.css'
 
 const colors = [{name: 'one color', id:0}, {name: 'gradient', id:1}, {name: 'different color', id:2}]
 const API = process.env.REACT_APP_API

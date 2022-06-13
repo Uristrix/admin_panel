@@ -1,0 +1,12 @@
+.message {
+  display: block;
+  padding-right: 25%;
+  padding-left: 25%;
+}
+@media (max-width: 768px) {
+  .message {
+    padding: 24px;
+  }
+}
+
+/*# sourceMappingURL=massage.css.map */
