@@ -128,7 +128,9 @@ export const Admin = observer(() =>
                     })
                     .catch((err) => {
                         console.log(err);
-                        NotificationManager.error('Ошибка удаления аудитории', '', 3000)
+                        NotificationManager.error('Сначала убедитесь что сообщение удалены',
+                            'Ошибка удаления аудитории',
+                            3000)
                     })
             }
         }
