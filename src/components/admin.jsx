@@ -118,8 +118,26 @@ export const Admin = observer(() =>
        }
         if(action === 'Удалить')
         {
-            if(Object.keys(rooms).length !== 0)
-            {
+            for(const el of store.massageS)
+                axios.delete(API + `geet/massage/${el['id']}/string/${dd['id']}`)
+                    .then((res) => {
+                        console.log(res);
+                        NotificationManager.success('Сообщения удалены', '', 3000)
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        NotificationManager.error('Ошибка удаления сообщений', '', 3000)})
+
+            for(const el of store.massageN)
+                axios.delete(API + `geet/massage/${el['id']}/string/${dd['id']}`)
+                    .then((res) => {
+                        console.log(res);
+                        NotificationManager.success('Сообщения удалены', '', 3000)
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        NotificationManager.error('Ошибка удаления сообщений', '', 3000)})
+
                 axios.delete(API + 'rStrings/' + dd['id'])
                     .then((res) => {
                         console.log(res);
@@ -128,11 +146,11 @@ export const Admin = observer(() =>
                     })
                     .catch((err) => {
                         console.log(err);
-                        NotificationManager.error('Сначала убедитесь что сообщение удалены',
+                        NotificationManager.error('Сначала убедитесь что сообщения удалены',
                             'Ошибка удаления аудитории',
                             3000)
                     })
-            }
+
         }
     }
 
