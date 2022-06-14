@@ -118,39 +118,51 @@ export const Admin = observer(() =>
        }
         if(action === 'Удалить')
         {
+            const check = store.massageS.length + store.massageN.length
+            let n = 0;
+            let error = 0;
             for(const el of store.massageS)
                 axios.delete(API + `geet/massage/${el['id']}/string/${dd['id']}`)
+                    // eslint-disable-next-line no-loop-func
                     .then((res) => {
+                        n++;
                         console.log(res);
                         NotificationManager.success('Сообщения удалены', '', 3000)
                     })
                     .catch((err) => {
                         console.log(err);
                         NotificationManager.error('Ошибка удаления сообщений', '', 3000)})
-
             for(const el of store.massageN)
                 axios.delete(API + `geet/massage/${el['id']}/string/${dd['id']}`)
+                    // eslint-disable-next-line no-loop-func
                     .then((res) => {
+                        n++;
                         console.log(res);
                         NotificationManager.success('Сообщения удалены', '', 3000)
                     })
                     .catch((err) => {
                         console.log(err);
                         NotificationManager.error('Ошибка удаления сообщений', '', 3000)})
+            let inter = setInterval ( () =>
+            {
+                if(check === n && error === 0)
+                if(Object.keys(rooms).length !== 0 )
+                    axios.delete(API + 'rStrings/' + dd['id'])
+                        .then((res) => {
+                            console.log(res);
+                            setTrigger(!triggerEffect);
+                            NotificationManager.success('Аудитория удалена', '', 3000)
 
-                axios.delete(API + 'rStrings/' + dd['id'])
-                    .then((res) => {
-                        console.log(res);
-                        setTrigger(!triggerEffect);
-                        NotificationManager.success('Аудитория удалена', '', 3000)
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        NotificationManager.error('Сначала убедитесь что сообщения удалены',
-                            'Ошибка удаления аудитории',
-                            3000)
-                    })
-
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            NotificationManager.error('Сначала убедитесь что сообщения удалены',
+                                'Ошибка удаления аудитории',
+                                3000)
+                        })
+                if(check === n || check === error + n)
+                    clearInterval(inter)
+            }, 300)
         }
     }
 
